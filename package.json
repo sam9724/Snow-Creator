@@ -1,0 +1,13 @@
+{
+  "name": "snow-creator-studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "start": "node scripts/serve.mjs"
+  },
+  "version": "1.0.0-preview",
+  "engines": {
+    "node": ">=18"
+  }
+}

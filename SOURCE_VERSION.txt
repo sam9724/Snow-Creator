@@ -1,0 +1,5 @@
+Snow Creator Studio — web source export
+Source commit: 1eb91ff631443d771f97641667263e07d93243d1
+Published Site version: 2
+Application code is unchanged from that commit.
+Portable Git setup files and a dependency-free local server were added for this export.
