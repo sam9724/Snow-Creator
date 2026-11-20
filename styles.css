@@ -10,3 +10,5 @@
 .stage:is(:fullscreen,.presenting) .stage-tools{opacity:1;transition:opacity .25s ease}
 .stage:is(:fullscreen,.presenting).controls-idle .stage-tools{opacity:0;visibility:hidden;pointer-events:none}
 .stage:is(:fullscreen,.presenting).controls-idle,.stage:is(:fullscreen,.presenting).controls-idle canvas{cursor:none}
+
+.weather-toggle{display:flex;align-items:center;gap:9px;font-size:14px;line-height:1.5}.weather-buttons{display:flex;gap:8px;margin:14px 0}.weather-buttons .button{flex:1;padding:9px}.weather-timing{display:grid;grid-template-columns:1fr 1fr;gap:12px}.weather-timing label{font-size:12px;line-height:1.5}.weather-timing input{display:block;width:100%;min-height:40px;margin-top:6px;padding:8px;border:1px solid var(--line);border-radius:7px;background:#f7faf9;color:var(--ink)}
