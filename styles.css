@@ -5,3 +5,8 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
 
 .stage.presenting{position:fixed;inset:0;z-index:50;width:100vw;height:100dvh;aspect-ratio:auto;display:grid;place-items:center;background:#081521}.stage.presenting canvas{width:min(100vw,160dvh);height:min(62.5vw,100dvh)}.stage.presenting .caption,.stage.presenting .drag-tip{display:none}.stage.presenting .stage-tools{opacity:.65}.stage.presenting:hover .stage-tools,.stage.presenting:focus-within .stage-tools{opacity:1}
+
+/* Activity-based presentation controls, including the fullscreen fallback. */
+.stage:is(:fullscreen,.presenting) .stage-tools{opacity:1;transition:opacity .25s ease}
+.stage:is(:fullscreen,.presenting).controls-idle .stage-tools{opacity:0;visibility:hidden;pointer-events:none}
+.stage:is(:fullscreen,.presenting).controls-idle,.stage:is(:fullscreen,.presenting).controls-idle canvas{cursor:none}

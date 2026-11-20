@@ -54,3 +54,30 @@ async function gallery(){let all=[];try{if(db)all=(await request('readonly',s=>s
 $('importSceneButton').onclick=()=>$('sceneInput').click();$('sceneInput').onchange=async()=>{const file=$('sceneInput').files[0];$('sceneInput').value='';if(!file)return;try{if(file.size>6500000)throw Error('Choose a scene file under 6.5 MB.');await load(JSON.parse(await file.text()));toast('Scene imported. Save it to keep a copy on this device.');}catch(e){toast(e instanceof SyntaxError?'This is not a valid scene JSON file.':e.message);}};
 window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);if(db&&storage){try{const tx=db.transaction('scenes','readwrite');tx.objectStore('scenes').put({id:'draft',data:structuredClone(scene),currentId,updatedAt:Date.now()});}catch{}}});
 async function init(){engine.setSettings(scene.settings);rebuild();engine.seed();sync();renderLayers();pause(paused);draw();requestAnimationFrame(frame);try{db=await database();}catch{storageError();return;}try{const draft=await request('readonly',s=>s.get('draft'));if(draft?.data)await load(draft.data,draft.currentId||null);$('saveStatus').textContent='Changes saved on this device';}catch{toast('Your last draft could not be restored. Saved scenes are still available.');}await gallery();}init();
+
+// Fullscreen controls follow activity rather than persistent hover/focus.
+{
+  const stage=$('stage'), tools=stage.querySelector('.stage-tools');
+  let hideTimer;
+  const presenting=()=>document.fullscreenElement===stage||stage.classList.contains('presenting');
+  function showControls(){
+    clearTimeout(hideTimer);
+    stage.classList.remove('controls-idle');
+    tools.inert=false;
+    if(!presenting())return;
+    hideTimer=setTimeout(()=>{
+      // Keep keyboard-focused buttons available until focus leaves them.
+      if(tools.contains(document.activeElement))return;
+      stage.classList.add('controls-idle');
+      tools.inert=true;
+    },2000);
+  }
+  stage.addEventListener('pointermove',showControls,{passive:true});
+  stage.addEventListener('pointerdown',showControls,{passive:true});
+  stage.addEventListener('keydown',showControls);
+  stage.addEventListener('focusin',showControls);
+  stage.addEventListener('focusout',showControls);
+  document.addEventListener('fullscreenchange',showControls);
+  let wasPresenting=presenting();
+  new MutationObserver(()=>{const active=presenting();if(active!==wasPresenting){wasPresenting=active;showControls();}}).observe(stage,{attributes:true,attributeFilter:['class']});
+}
